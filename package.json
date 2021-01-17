@@ -1,0 +1,53 @@
+{
+  "name": "generator-xes-project",
+  "version": "0.0.1",
+  "description": "yo generator for setting up projects",
+  "author": "Xesenix",
+  "files": [
+    "generators",
+    "helpers",
+    "validators"
+  ],
+  "keywords": [
+    "yeoman-generator",
+    "webpack",
+    "babel",
+    "typescript",
+    "karma",
+    "cypress",
+    "docker"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+	"jest": {
+		"testEnvironment": "node",
+		"testPathIgnorePatterns": [
+			"/node_modules/",
+			"/templates/"
+		]
+	},
+	"lint-staged": {
+		"*.js": [
+			"eslint --fix",
+			"git add"
+		],
+		"*.json": [
+			"git add"
+		]
+	},
+	"eslintConfig": {
+		"extends": [
+			"xo"
+		],
+		"env": {
+			"jest": true,
+			"node": true
+		}
+	},
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^7.18.0",
+    "jest": "^26.6.3"
+  }
+}
