@@ -1,0 +1,14 @@
+{
+	"*.js": [
+		"eslint --fix"
+	],
+	"{*.json,.eslintrc,.prettierrc,.markdownlint}": [
+		"jsonlint -i -p"
+	],
+	"*.jsonp": [
+		"prettier --write --parser=json"
+	],
+	"*.md": [
+		"markdownlint --fix"
+	]
+}

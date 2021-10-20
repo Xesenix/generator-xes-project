@@ -1,0 +1,8 @@
+{
+	"default": true,
+	// test
+	"MD010": {
+		"code_blocks": true,
+		"spaces_per_tab": 2
+	}
+}
