@@ -3,7 +3,7 @@
 const path = require('path');
 const helpers = require('yeoman-test');
 
-const { resetPrompts } = require('../lib/generator');
+const { resetPrompts, resetGeneratorComposition } = require('../lib/generator');
 
 const { getModulesLatestVersions } = require('./utils/utils');
 
@@ -26,6 +26,7 @@ describe('yo xes-project:git', () => {
 
 	beforeEach(() => {
 		resetPrompts();
+		resetGeneratorComposition();
 	});
 
 	it('should initialize .gitignore', async () => {
