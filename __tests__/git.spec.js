@@ -9,6 +9,23 @@ const { getModulesLatestVersions } = require('./utils/utils');
 
 const generatorPath = path.resolve('./generators/git');
 
+function testGitIgnore(gitIgnoreContext) {
+	it(`should initialize .gitignore with ${ gitIgnoreContext.join(', ') }`, async () => {
+		const result = await helpers
+			.run(generatorPath)
+			.withOptions({ skipInstall: true })
+			.withPrompts({ initGit: 'yes', initGitIgnore: 'yes', gitIgnoreContext })
+			.toPromise()
+			;
+
+		result.assertFile('.gitignore');
+		gitIgnoreContext.forEach((context) => {
+			result.assertFileContent('.gitignore', new RegExp(`# ===== ${ context } =====`, 'g'));
+		});
+		result.restore();
+	});
+}
+
 describe('yo xes-project:git', () => {
 	let gitModules;
 
@@ -29,23 +46,13 @@ describe('yo xes-project:git', () => {
 		resetGeneratorComposition();
 	});
 
-	it('should initialize .gitignore', async () => {
-		const result = await helpers
-			.run(generatorPath)
-			// .withOptions({ skipInstall: false })
-			.withPrompts({ initGit: 'yes', initGitIgnore: 'yes', gitIgnoreContext: ['Node'] })
-			.toPromise()
-			;
-
-		result.assertFile('.gitignore');
-		result.assertFileContent('.gitignore', /# ===== Node =====/);
-		result.restore();
-	});
+	testGitIgnore(['Node']);
+	testGitIgnore(['UnrealEngine', 'Unity']);
 
 	it('should not initialize .gitignore', async () => {
 		const result = await helpers
 			.run(generatorPath)
-			// .withOptions({ skipInstall: false })
+			.withOptions({ skipInstall: true })
 			.withPrompts({ initGit: 'no', initGitIgnore: 'no' })
 			.toPromise()
 			;
@@ -54,30 +61,24 @@ describe('yo xes-project:git', () => {
 		result.restore();
 	});
 
-	// can't check if .gti folder is created or not
+	// can't check if .gti folder is created or not in virtual file system
 	it.skip('should initialize .git', async () => {
 		const result = await helpers
 			.run(generatorPath)
-			.withOptions({ skipInstall: false })
+			.withOptions({ skipInstall: true })
 			.withPrompts({ initGit: 'yes' })
 			.toPromise()
 			;
-
-		await new Promise((resolve) => setTimeout(resolve, 5000));
-
-		console.log(result);
-
-		result.env.fs();
 
 		result.assertFile('.git');
 		result.restore();
 	});
 
-	// can't check if .gti folder is created or not
+	// can't check if .gti folder is created or not in virtual file system
 	it.skip('should not initialize .git', async () => {
 		const result = await helpers
 			.run(generatorPath)
-			.withOptions({ skipInstall: false })
+			.withOptions({ skipInstall: true })
 			.withPrompts({ initGit: 'no' })
 			.toPromise()
 			;
@@ -100,7 +101,7 @@ describe('yo xes-project:git', () => {
 			devDependencies: gitModules,
 		});
 		result.restore();
-	});
+	}, 300000);
 
 	it('should not install dependencies', async () => {
 		const result = await helpers

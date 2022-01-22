@@ -3,13 +3,13 @@
 const axios = require('axios');
 
 const { Generator } = require('../../lib/generator');
-const { scriptColor, promptColor } = require('../../lib/colors');
+const { variableColor, scriptColor, promptColor, errortColor } = require('../../lib/colors');
 const { answerToBoolean } = require('../../lib/utils');
 
 const getGitIgnore = async function (context) {
 	const gitIgnoreUrl = `https://raw.githubusercontent.com/github/gitignore/master/${ context }.gitignore`;
 
-	this.log(`copying ${ context } gitignore from ${ gitIgnoreUrl }...\n`);
+	this.log(`Copying ${ variableColor(context) } ${ scriptColor('.gitignore') } from ${ variableColor(gitIgnoreUrl) }...`);
 
 	const { data } = await axios.get(gitIgnoreUrl);
 
@@ -92,14 +92,18 @@ module.exports = class GitGenerator extends Generator {
 		if (this.props.initGitIgnore) {
 			this.log(`Downloading ${ scriptColor('.gitignore') }...`);
 
-			const ignoreContent = (await Promise.all(this.props.gitIgnoreContext.map((section) => getGitIgnore.call(this, section))))
-				.join('\n');
+			try {
+				const ignoreContent = (await Promise.all(this.props.gitIgnoreContext.map((section) => getGitIgnore.call(this, section))))
+					.join('\n');
 
-			this.log(`Initializing ${ scriptColor('.gitignore') }...`);
-			this.fs.write(
-				this.destinationPath('.gitignore'),
-				ignoreContent,
-			);
+				this.log(`Initializing ${ scriptColor('.gitignore') }...`);
+				this.fs.write(
+					this.destinationPath('.gitignore'),
+					ignoreContent,
+				);
+			} catch (err) {
+				this.log(`Downloading ${ errortColor('FAILED') }...`);
+			}
 		} else {
 			this.log(`Skip ${ scriptColor('.gitignore') }...`);
 		}
