@@ -1,8 +1,9 @@
 {
-	"recommendations": [
-		"davidanson.vscode-markdownlint",
-		"christian-kohler.path-intellisense",
-		"streetsidesoftware.code-spell-checker",
-		"yzhang.markdown-all-in-one"
-	]
+  "recommendations": [
+    "davidanson.vscode-markdownlint",
+    "christian-kohler.path-intellisense",
+    "mrmlnc.vscode-scss",
+    "streetsidesoftware.code-spell-checker",
+    "yzhang.markdown-all-in-one"
+  ]
 }
