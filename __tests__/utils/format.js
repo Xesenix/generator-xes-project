@@ -23,8 +23,37 @@ const formatOptions = [
 
 const testEditorConfig = (generatorPath, { expect: { editorConfigGenerated }, prompts = {}, options = {} }) => {
 	describe(`for prompts ${ JSON.stringify(prompts) }`, () => {
-		describe.each(formatOptions)(`when format: %s, %s, %s`, (indentStyle, indentSize, quote) => {
-			it('should initialize .editorconfig', async () => {
+		if (editorConfigGenerated) {
+			describe.each(formatOptions)(`when format: %s, %s, %s`, (indentStyle, indentSize, quote) => {
+				it('should initialize .editorconfig', async () => {
+					const result = extendResult(
+						await helpers
+							.run(generatorPath)
+							.withOptions({
+								skipInstall: true,
+								...options,
+							})
+							.withPrompts({
+								...prompts,
+								indentStyle,
+								indentSize,
+								quote,
+							})
+							.toPromise(),
+					);
+
+					result.assertFile('.editorconfig');
+					result.assertIniFileContent('.editorconfig', editorConfigFactory({
+						indentStyle,
+						indentSize,
+						quote,
+					}));
+
+					result.restore();
+				});
+			});
+		} else {
+			it('should not initialize .editorconfig', async () => {
 				const result = extendResult(
 					await helpers
 						.run(generatorPath)
@@ -34,26 +63,15 @@ const testEditorConfig = (generatorPath, { expect: { editorConfigGenerated }, pr
 						})
 						.withPrompts({
 							...prompts,
-							indentStyle,
-							indentSize,
-							quote,
 						})
 						.toPromise(),
 				);
 
-				if (editorConfigGenerated) {
-					result.assertFile('.editorconfig');
-					result.assertIniFileContent('.editorconfig', editorConfigFactory({
-						indentStyle,
-						indentSize,
-						quote,
-					}));
-				} else {
-					result.assertNoFile('.editorconfig');
-				}
+
+				result.assertNoFile('.editorconfig');
 				result.restore();
 			});
-		});
+		}
 	});
 };
 

@@ -38,6 +38,7 @@ module.exports = class EditorConfigGenerator extends Generator {
 	async configuring() {
 		const {
 			vsCodeSetup = null,
+			initGit = null,
 		} = this.config.getAll();
 
 		if (!this.props.initEditorConfig) {
@@ -46,6 +47,10 @@ module.exports = class EditorConfigGenerator extends Generator {
 
 		if (vsCodeSetup === null) {
 			this.composeWith(require.resolve('../vscode'));
+		}
+
+		if (initGit === null) {
+			this.composeWith(require.resolve('../git'));
 		}
 	}
 
@@ -58,7 +63,7 @@ module.exports = class EditorConfigGenerator extends Generator {
 			return;
 		}
 
-		const { format } = this.config.getAll();
+		const { format, initGit = false } = this.config.getAll();
 
 		this.log(`Setting up ${ scriptColor('.editorconfig') }...`);
 		this.fs.copyTpl(
@@ -83,6 +88,19 @@ module.exports = class EditorConfigGenerator extends Generator {
 					'editorconfig.editorconfig',
 				]).sort(),
 			}));
+		}
+
+		if (initGit) {
+			this.log(`Setting up lint staged configuration in ${ scriptColor('.lintstagedrc') }...`);
+
+			this.extendJSON(
+				'.lintstagedrc',
+				(lintStagedConfig) => ({
+					...lintStagedConfig,
+					// editor config should be last
+					'*': 'eclint fix',
+				}),
+			);
 		}
 	}
 

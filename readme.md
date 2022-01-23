@@ -25,6 +25,8 @@
       - [ ] [2.7.2. Cypress](#272-cypress)
     - [ ] [2.8. Setup translations](#28-setup-translations)
   - [3. How to contribute](#3-how-to-contribute)
+  - [4. About generator development](#4-about-generator-development)
+    - [4.1 Linting and formatting](#41-linting-and-formatting)
 
 ## 1. How to install generators
 
@@ -118,3 +120,5 @@ Using jsonlint for lint-staged ignores editorconfig indentation configuration (a
 
 __Idea__: use [vscode language server](https://github.com/microsoft/vscode-languageserver-node) to format committed code consistent with vscode setup.
 [More info about Language Server](https://code.visualstudio.com/api/language-extensions/language-server-extension-guide)
+
+__Idea 2__: use eclint to fix indentation after running other fixers

@@ -15,10 +15,6 @@ module.exports = ({
 		indent_brace_style: '1TBS',
 	},
 
-	"{*.json,*.jsonc,.eslintrc,.prettierrc,.markdownlint,.lintstagedrc}": {
-		"indent_style": "space # tabs configuration is not handled by jsonlint",
-	},
-
 	"*.md": {
 		max_line_length: 'off',
 		trim_trailing_whitespace: "false",

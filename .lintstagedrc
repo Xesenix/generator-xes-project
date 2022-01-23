@@ -1,14 +1,17 @@
 {
-  "!(templates/**/)*.js": [
-    "eslint --fix"
-  ],
-  "!(**/templates/**/*){*.json,.eslintrc,.prettierrc,.markdownlint,.lintstagedrc}": [
-    "jsonlint -i -p"
-  ],
-  "!(templates/**/)*.jsonc": [
-    "prettier --write --parser=json"
-  ],
-  "*.md": [
-    "markdownlint --fix -c .markdownlint.jsonc"
-  ]
+	"!(templates/**/)*.js": [
+		"eslint --fix"
+	],
+	"!(**/templates/**/*){*.json,.eslintrc,.prettierrc,.markdownlint,.lintstagedrc}": [
+		"jsonlint -i -p"
+	],
+	"!(templates/**/)*.jsonc": [
+		"prettier --write --parser=json"
+	],
+	"*.md": [
+		"markdownlint --fix -c .markdownlint.jsonc"
+	],
+	"*": [
+		"eclint fix"
+	]
 }
