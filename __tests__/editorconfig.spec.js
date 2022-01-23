@@ -14,6 +14,9 @@ describe('yo xes-project:editorconfig', () => {
 	});
 
 	testEditorConfig(generatorPath, {
+		expect: {
+			editorConfigGenerated: true,
+		},
 		prompts: {
 			initEditorConfig: "yes",
 			initLinting: 'yes',
@@ -22,6 +25,9 @@ describe('yo xes-project:editorconfig', () => {
 	});
 
 	testEditorConfig(generatorPath, {
+		expect: {
+			editorConfigGenerated: false,
+		},
 		prompts: {
 			initEditorConfig: "no",
 			initLinting: 'yes',
@@ -30,6 +36,9 @@ describe('yo xes-project:editorconfig', () => {
 	});
 
 	testEditorConfig(generatorPath, {
+		expect: {
+			editorConfigGenerated: true,
+		},
 		prompts: {
 			initEditorConfig: "yes",
 			initLinting: 'no',
@@ -38,6 +47,9 @@ describe('yo xes-project:editorconfig', () => {
 	});
 
 	testEditorConfig(generatorPath, {
+		expect: {
+			editorConfigGenerated: false,
+		},
 		prompts: {
 			initEditorConfig: "no",
 			initLinting: 'no',

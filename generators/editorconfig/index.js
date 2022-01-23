@@ -2,7 +2,7 @@
 
 const { Generator } = require('../../lib/generator');
 const { scriptColor, promptColor } = require('../../lib/colors');
-const { answerToBoolean } = require('../../lib/utils');
+const { answerToBoolean, unique } = require('../../lib/utils');
 const { promptFormat } = require('../../lib/prompts');
 
 module.exports = class EditorConfigGenerator extends Generator {
@@ -35,7 +35,25 @@ module.exports = class EditorConfigGenerator extends Generator {
 		this.config.save();
 	}
 
+	async configuring() {
+		const {
+			vsCodeSetup = null,
+		} = this.config.getAll();
+
+		if (!this.props.initEditorConfig) {
+			return;
+		}
+
+		if (vsCodeSetup === null) {
+			this.composeWith(require.resolve('../vscode'));
+		}
+	}
+
 	async writing() {
+		const {
+			vsCodeSetup = false,
+		} = this.config.getAll();
+
 		if (!this.props.initEditorConfig) {
 			return;
 		}
@@ -48,5 +66,42 @@ module.exports = class EditorConfigGenerator extends Generator {
 			this.destinationPath('.editorconfig'),
 			format,
 		);
+
+		this.log(`Add lint fixing script to ${ scriptColor('package.json') }...`);
+		this.fs.extendJSON(this.destinationPath('package.json'), {
+			scripts: {
+				'eclint:fix': 'eclint fix',
+			},
+		});
+
+		if (vsCodeSetup) {
+			this.log(`Setting up recomendations in ${ scriptColor('.vscode/extensions.json') }...`);
+
+			this.extendJSON('.vscode/extensions.json', (extensions) => ({
+				recommendations: unique([
+					...(extensions.recommendations || []),
+					'editorconfig.editorconfig',
+				]).sort(),
+			}));
+		}
+	}
+
+	async install() {
+		const {
+			npmInstall = false,
+		} = this.config.getAll();
+
+		if (!this.props.initEditorConfig) {
+			return;
+		}
+
+		if (npmInstall) {
+			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
+			await this.addDevDependencies([
+				'eclint',
+			]);
+		} else {
+			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
+		}
 	}
 };
