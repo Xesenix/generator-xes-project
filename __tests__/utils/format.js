@@ -3,8 +3,8 @@
 const helpers = require('yeoman-test');
 
 const extendResult = require('./extended-test-result');
-const editorConfigFactory = require('../fixture/editorconfig');
-const tslintConfigFactory = require('../fixture/tslintconfig');
+const editorConfigFactory = require('../fixture/editor-config');
+const tslintConfigFactory = require('../fixture/tslint-config');
 
 const formatOptions = [
 	['tab', '2', 'single'],

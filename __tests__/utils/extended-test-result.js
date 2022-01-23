@@ -1,4 +1,4 @@
-const ini = require('ini');
+const { ConfigIniParser } = require("config-ini-parser");
 const assert = require('assert-plus');
 
 module.exports = function extendResult(result) {
@@ -16,7 +16,13 @@ module.exports = function extendResult(result) {
 	};
 
 	result.assertIniFileContent = function (filename, content) {
-		const object = ini.parse(result._readFile(filename));
+		const parser = new ConfigIniParser();
+		parser.parse(result._readFile(filename));
+
+		const object = parser.sections().reduce((result, key) => ({
+			...result,
+			[key]: parser.items(key).reduce((r, [k, v]) => ({ ...r, [k]: v }), {}),
+		}), {});
 
 		try {
 			assert.deepEqual(object, content);

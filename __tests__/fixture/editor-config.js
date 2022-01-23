@@ -3,22 +3,27 @@ module.exports = ({
 	indentSize,
 	quote,
 }) => ({
-	root: true,
 	'*': {
 		charset: 'utf-8',
 		indent_style: indentStyle,
 		indent_size: indentSize,
-		insert_final_newline: true,
+		insert_final_newline: "true",
 		quote_type: quote,
-		trim_trailing_whitespace: true,
-		spaces_around_operators: true,
-		spaces_around_brackets: false,
+		trim_trailing_whitespace: "true",
+		spaces_around_operators: "true",
+		spaces_around_brackets: "false",
 		indent_brace_style: '1TBS',
-		md: {
-			max_line_length: 'off',
-			trim_trailing_whitespace: false,
-		},
 	},
+
+	"{*.json,*.jsonc,.eslintrc,.prettierrc,.markdownlint,.lintstagedrc}": {
+		"indent_style": "space # tabs configuration is not handled by jsonlint",
+	},
+
+	"*.md": {
+		max_line_length: 'off',
+		trim_trailing_whitespace: "false",
+	},
+
 	"node_modules/**": {
 		'charset': 'unset',
 		'indent_style': 'unset',
