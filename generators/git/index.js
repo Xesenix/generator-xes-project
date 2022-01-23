@@ -74,11 +74,17 @@ module.exports = class GitGenerator extends Generator {
 	}
 
 	async configuring() {
+		const {
+			npmInstall = null,
+		} = this.config.getAll();
+
 		if (!this.props.initGit) {
 			return;
 		}
 
-		this.composeWith(require.resolve('../npm'), {});
+		if (npmInstall === null) {
+			this.composeWith(require.resolve('../npm'));
+		}
 	}
 
 	async writing() {
@@ -116,8 +122,9 @@ module.exports = class GitGenerator extends Generator {
 
 		if (npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
-			this.addDevDependencies([
+			await this.addDevDependencies([
 				'husky',
+				'lint-staged',
 				'validate-commit-msg',
 				'commitizen',
 				'cz-conventional-changelog',
