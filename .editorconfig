@@ -11,6 +11,9 @@ spaces_around_operators = true
 spaces_around_brackets = false
 indent_brace_style = 1TBS
 
+[{*.json,*.jsonc,.eslintrc,.prettierrc,.markdownlint,.lintstagedrc}]
+indent_style = space # tabs configuration is not handled by jsonlint
+
 [*.md]
 indent_style = space
 indent_size = 2

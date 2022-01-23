@@ -109,3 +109,12 @@ yo xes-project:i18n
 ```
 
 ## 3. How to contribute
+
+## 4. About generator development
+
+### 4.1 Linting and formatting
+
+Using jsonlint for lint-staged ignores editorconfig indentation configuration(allways uses spaces). Its formatting is closest to what vscode (vscode.json-language-features) formatting does. Looks better than what prettier formatting but cannot handle json with comments.
+
+__Idea__: use [vscode language server](https://github.com/microsoft/vscode-languageserver-node) to format committed code consistent with vscode setup.
+[More info about Language Server](https://code.visualstudio.com/api/language-extensions/language-server-extension-guide)
