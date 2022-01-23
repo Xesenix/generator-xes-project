@@ -29,8 +29,8 @@ module.exports = ({
 			true,
 			{
 				"multiline": "always",
-				"single": "never",
-				"esSpecCompilant": true,
+				"singleline": "never",
+				"esSpecCompliant": true,
 			},
 		],
 		"no-redundant-jsdoc": true,
@@ -47,8 +47,36 @@ module.exports = ({
 		"valid-typeof": true,
 		"semicolon": [true, "always"],
 		"whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-rest-spread", "check-type", "check-typecast", "check-type-operator"],
-		"ordered-imports": [true, "lowercase-first"],
 		"object-literal-sort-keys": false,
+		"ordered-imports": [
+			true,
+			{
+				"named-imports-order": "lowercase-first",
+				"grouped-imports": true,
+				"groups": [
+					{
+						"name": "absolute path",
+						"match": "^@(app|core|common|collections|shared|lib|models)",
+						"order": 20,
+					},
+					{
+						"named": "relative paths",
+						"match": "^\\.\\.",
+						"order": 30,
+					},
+					{
+						"named": "same paths",
+						"match": "^\\.",
+						"order": 40,
+					},
+					{
+						"named": "external dependencies",
+						"match": ".",
+						"order": 10,
+					},
+				],
+			},
+		],
 		"array-bracket-spacing": ["error", "always"],
 		"jsx-curly-spacing": ["error", "always"],
 		"jsx-no-multiline-js": false,
