@@ -21,7 +21,7 @@ const formatOptions = [
 	['space', '8', 'double'],
 ];
 
-const testEditorConfig = (generatorPath, { prompts = {}, options = {} }) => {
+const testEditorConfig = (generatorPath, { expect: { editorConfigGenerated }, prompts = {}, options = {} }) => {
 	describe(`for prompts ${ JSON.stringify(prompts) }`, () => {
 		describe.each(formatOptions)(`when format: %s, %s, %s`, (indentStyle, indentSize, quote) => {
 			it('should initialize .editorconfig', async () => {
@@ -41,7 +41,7 @@ const testEditorConfig = (generatorPath, { prompts = {}, options = {} }) => {
 						.toPromise(),
 				);
 
-				if (prompts.initEditorConfig === "yes") {
+				if (editorConfigGenerated) {
 					result.assertFile('.editorconfig');
 					result.assertIniFileContent('.editorconfig', editorConfigFactory({
 						indentStyle,
