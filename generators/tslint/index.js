@@ -35,15 +35,21 @@ module.exports = class TSLintGenerator extends Generator {
 	}
 
 	async configuring() {
+		const {
+			npmInstall = null,
+		} = this.config.getAll();
+
 		if (!this.props.initTSLint) {
 			return;
 		}
 
-		this.composeWith(require.resolve('../npm'));
+		if (npmInstall === null) {
+			this.composeWith(require.resolve('../npm'));
+		}
 	}
 
 	async writing() {
-		const { format = null } = this.config.getAll();
+		const { format = null, initGit = false } = this.config.getAll();
 
 		if (!this.props.initTSLint) {
 			return;
@@ -55,6 +61,22 @@ module.exports = class TSLintGenerator extends Generator {
 			this.destinationPath('tslint.json'),
 			format,
 		);
+
+		this.log(`Add lint fixing script to ${ scriptColor('package.json') }...`);
+		this.fs.extendJSON(this.destinationPath('package.json'), {
+			scripts: {
+				'tslint:fix': 'tslint --fix src/**/*.ts',
+			},
+		});
+
+		if (initGit) {
+			this.log(`Setting up lint staged configuration in ${ scriptColor('.lintstagedrc') }...`);
+
+			this.extendJSON('.lintstagedrc', (lintStagedConfig) => ({
+				...lintStagedConfig,
+				'*.(j|t)s': ['tslint --fix'],
+			}));
+		}
 	}
 
 	async install() {
@@ -68,7 +90,7 @@ module.exports = class TSLintGenerator extends Generator {
 
 		if (npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
-			this.addDevDependencies([
+			await this.addDevDependencies([
 				'tslint',
 				// 'tslint-config-prettier', // maybe not needed as prettier has bad formatting configuration
 				'tslint-config-standard',
@@ -76,12 +98,5 @@ module.exports = class TSLintGenerator extends Generator {
 		} else {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
 		}
-
-		this.log(`Add linting fixing script to ${ scriptColor('package.json') }...`);
-		this.fs.extendJSON(this.destinationPath('package.json'), {
-			scripts: {
-				'tslint:fix': 'tslint --fix src/**/*.ts',
-			},
-		});
 	}
 };

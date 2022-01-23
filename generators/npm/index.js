@@ -40,10 +40,12 @@ module.exports = class NPMGenerator extends Generator {
 
 		if (npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
-			this.addDevDependencies([
+			await this.addDevDependencies([
 				'cross-env',
 				'mkdirp',
 			]);
+
+			this.install({ npm: true });
 		} else {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
 		}
