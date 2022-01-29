@@ -1,21 +1,21 @@
 'use strict';
 
-const { Generator } = require('../../lib/generator');
-const { scriptColor, promptColor } = require('../../lib/colors');
-const { answerToBoolean, unique } = require('../../lib/utils');
-const { promptFormat } = require('../../lib/prompts');
+import { Generator } from '../../lib/generator.js';
+import { promptColor, scriptColor } from '../../lib/colors.js';
+import { answerToBoolean, unique } from '../../lib/utils.js';
+import { promptFormat } from '../../lib/prompts.js';
 
-module.exports = class MDLintGenerator extends Generator {
+export default class MDLintGenerator extends Generator {
 	namespace = 'MDLINT';
 
 	async prompting() {
-		this.log(`General configuration:\n`);
+		this.log('General configuration:\n');
 
 		let { initMDLint } = await this.prompt([
 			{
 				type: 'list',
 				name: 'initMDLint',
-				message: promptColor(`Initialize markdownlint: `),
+				message: promptColor('Initialize markdownlint: '),
 				default: 'yes',
 				choices: ['yes', 'no'],
 				store: true,
@@ -112,4 +112,4 @@ module.exports = class MDLintGenerator extends Generator {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
 		}
 	}
-};
+}

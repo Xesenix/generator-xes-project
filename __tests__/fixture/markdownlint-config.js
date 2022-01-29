@@ -1,4 +1,4 @@
-module.exports = ({
+export default ({
 	indentSize,
 }) => ({
 	// Example markdownlint JSON(C) configuration with all properties set to their default value

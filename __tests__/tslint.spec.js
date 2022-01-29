@@ -1,11 +1,12 @@
 'use strict';
 
-const path = require('path');
-const { resetPrompts, resetGeneratorComposition } = require('../lib/generator');
+import path from 'path';
 
-const generatorPath = path.resolve('./generators/tslint');
+import { resetPrompts, resetGeneratorComposition } from '../dist/lib/generator.js';
 
-const { testTSLintConfig } = require('./utils/format');
+import { testTSLintConfig } from './shared/tslint.js';
+
+const generatorPath = path.resolve('./dist/generators/tslint');
 
 describe('yo xes-project:tslint', () => {
 	beforeEach(() => {
@@ -15,14 +16,14 @@ describe('yo xes-project:tslint', () => {
 
 	testTSLintConfig(generatorPath, {
 		prompts: {
-			initEditorConfig: "yes",
+			initEditorConfig: 'yes',
 			initLinting: 'yes',
 		},
 	});
 
 	testTSLintConfig(generatorPath, {
 		prompts: {
-			initEditorConfig: "no",
+			initEditorConfig: 'no',
 			initLinting: 'yes',
 		},
 	});

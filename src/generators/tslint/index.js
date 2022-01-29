@@ -1,21 +1,21 @@
 'use strict';
 
-const { Generator } = require('../../lib/generator');
-const { scriptColor, promptColor } = require('../../lib/colors');
-const { answerToBoolean } = require('../../lib/utils');
-const { promptFormat } = require('../../lib/prompts');
+import { Generator } from '../../lib/generator.js';
+import { scriptColor, promptColor } from '../../lib/colors.js';
+import { answerToBoolean } from '../../lib/utils.js';
+import { promptFormat } from '../../lib/prompts.js';
 
-module.exports = class TSLintGenerator extends Generator {
+export default class TSLintGenerator extends Generator {
 	namespace = 'TSLINT';
 
 	async prompting() {
-		this.log(`General configuration:\n`);
+		this.log('General configuration:\n');
 
 		let { initTSLint } = await this.prompt([
 			{
 				type: 'list',
 				name: 'initTSLint',
-				message: promptColor(`Initialize tslint: `),
+				message: promptColor('Initialize tslint: '),
 				default: 'yes',
 				choices: ['yes', 'no'],
 				store: true,
@@ -99,4 +99,4 @@ module.exports = class TSLintGenerator extends Generator {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
 		}
 	}
-};
+}

@@ -1,21 +1,21 @@
 'use strict';
 
-const { Generator } = require('../../lib/generator');
-const { scriptColor, promptColor } = require('../../lib/colors');
-const { promptFormat } = require('../../lib/prompts');
-const { answerToBoolean, unique } = require('../../lib/utils');
+import { Generator } from '../../lib/generator.js';
+import { scriptColor, promptColor } from '../../lib/colors.js';
+import { answerToBoolean, unique } from '../../lib/utils.js';
+import { promptFormat } from '../../lib/prompts.js';
 
 module.exports = class VSCodeGenerator extends Generator {
 	namespace = 'VSCode';
 
 	async prompting() {
-		this.log(`General configuration:\n`);
+		this.log('General configuration:\n');
 
 		let { vsCodeSetup } = await this.prompt([
 			{
 				type: 'list',
 				name: 'vsCodeSetup',
-				message: promptColor(`Configure VSCode?`),
+				message: promptColor('Configure VSCode?'),
 				default: 'yes',
 				choices: ['yes', 'no'],
 				store: false,
@@ -54,7 +54,7 @@ module.exports = class VSCodeGenerator extends Generator {
 			return;
 		}
 
-		this.log(`Initializing vscode...`);
+		this.log('Initializing vscode...');
 
 		this.log(`Setting up recomendations in ${ scriptColor('.vscode/extensions.json') }...`);
 
@@ -63,7 +63,7 @@ module.exports = class VSCodeGenerator extends Generator {
 				...(extensions.recommendations || []),
 				'christian-kohler.path-intellisense',
 				'davidanson.vscode-markdownlint',
-				"mrmlnc.vscode-scss",
+				'mrmlnc.vscode-scss',
 				'editorconfig.editorconfig',
 				'streetsidesoftware.code-spell-checker',
 			]).sort(),

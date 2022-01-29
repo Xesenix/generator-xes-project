@@ -1,11 +1,12 @@
 'use strict';
+import path from 'path';
 
-const path = require('path');
+import { testEditorConfig } from './shared/editorconfig.js';
+import { testVSCodeSettings } from './shared/vscode.js';
 
-const { resetPrompts, resetGeneratorComposition } = require('../lib/generator');
-const { testVSCodeSettings, testEditorConfig } = require('./utils/format');
+import { resetPrompts, resetGeneratorComposition } from '../dist/lib/generator.js';
 
-const generatorPath = path.resolve('./generators/vscode');
+const generatorPath = path.resolve('./dist/generators/vscode');
 
 describe('yo xes-project:vscode', () => {
 	beforeEach(() => {
@@ -37,7 +38,7 @@ describe('yo xes-project:vscode', () => {
 		},
 		prompts: {
 			vsCodeSetup: 'yes',
-			initEditorConfig: "yes",
+			initEditorConfig: 'yes',
 		},
 	});
 
@@ -47,7 +48,7 @@ describe('yo xes-project:vscode', () => {
 		},
 		prompts: {
 			vsCodeSetup: 'yes',
-			initEditorConfig: "no",
+			initEditorConfig: 'no',
 		},
 	});
 
@@ -57,7 +58,7 @@ describe('yo xes-project:vscode', () => {
 		},
 		prompts: {
 			vsCodeSetup: 'no',
-			initEditorConfig: "no",
+			initEditorConfig: 'no',
 		},
 	});
 });

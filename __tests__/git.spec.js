@@ -1,44 +1,35 @@
 'use strict';
 
-const path = require('path');
-const helpers = require('yeoman-test');
+import path from 'path';
+import helpers from 'yeoman-test';
 
-const { resetPrompts, resetGeneratorComposition } = require('../lib/generator');
+import { resetPrompts, resetGeneratorComposition } from '../dist/lib/generator.js';
 
-const { getModulesLatestVersions } = require('./utils/utils');
+import { testGitIgnore } from './shared/git.js';
+import { getModulesLatestVersions, describePrompts } from './utils/utils.js';
+import extendResult from './utils/extended-test-result';
 
-const generatorPath = path.resolve('./generators/git');
-
-function testGitIgnore(gitIgnoreContext) {
-	it(`should initialize .gitignore with ${ gitIgnoreContext.join(', ') }`, async () => {
-		const result = await helpers
-			.run(generatorPath)
-			.withOptions({ skipInstall: true })
-			.withPrompts({ initGit: 'yes', initGitIgnore: 'yes', gitIgnoreContext })
-			.toPromise()
-			;
-
-		result.assertFile('.gitignore');
-		gitIgnoreContext.forEach((context) => {
-			result.assertFileContent('.gitignore', new RegExp(`# ===== ${ context } =====`, 'g'));
-		});
-		result.restore();
-	});
-}
+const generatorPath = path.resolve('./dist/generators/git');
 
 describe('yo xes-project:git', () => {
 	let gitModules;
+	let npmModules;
 
 	beforeAll(async () => {
-		gitModules = (await getModulesLatestVersions([
+		gitModules = await getModulesLatestVersions([
 			'husky',
+			'lint-staged',
 			'validate-commit-msg',
 			'commitizen',
 			'cz-conventional-changelog',
 			'semantic-release',
 			'@commitlint/config-conventional',
 			'@commitlint/cli',
-		]));
+		]);
+		npmModules = await getModulesLatestVersions([
+			'cross-env',
+			'mkdirp',
+		]);
 	});
 
 	beforeEach(() => {
@@ -46,73 +37,92 @@ describe('yo xes-project:git', () => {
 		resetGeneratorComposition();
 	});
 
-	testGitIgnore(['Node']);
-	testGitIgnore(['UnrealEngine', 'Unity']);
+	testGitIgnore(generatorPath, { prompts: { gitIgnoreContext: ['Node'] } });
+	testGitIgnore(generatorPath, { prompts: { gitIgnoreContext: ['UnrealEngine', 'Unity'] } });
 
 	it('should not initialize .gitignore', async () => {
-		const result = await helpers
-			.run(generatorPath)
-			.withOptions({ skipInstall: true })
-			.withPrompts({ initGit: 'no', initGitIgnore: 'no' })
-			.toPromise()
-			;
+		const result = extendResult(
+			await helpers
+				.run(generatorPath)
+				.withOptions({ skipInstall: true })
+				.withPrompts({ initGit: 'no', initGitIgnore: 'no' })
+				.toPromise()
+		);
 
 		result.assertNoFile('.gitignore');
 		result.restore();
-	});
-
-	// can't check if .gti folder is created or not in virtual file system
-	it.skip('should initialize .git', async () => {
-		const result = await helpers
-			.run(generatorPath)
-			.withOptions({ skipInstall: true })
-			.withPrompts({ initGit: 'yes' })
-			.toPromise()
-			;
-
-		result.assertFile('.git');
-		result.restore();
-	});
-
-	// can't check if .gti folder is created or not in virtual file system
-	it.skip('should not initialize .git', async () => {
-		const result = await helpers
-			.run(generatorPath)
-			.withOptions({ skipInstall: true })
-			.withPrompts({ initGit: 'no' })
-			.toPromise()
-			;
-
-		result.assertNoFile('.git');
-		result.restore();
-	});
-
-	it('should install dependencies', async () => {
-		const result = await helpers
-			.run(generatorPath)
-			.withOptions({ skipInstall: false })
-			.withPrompts({ initGit: 'yes', npmInstall: 'yes' })
-			.toPromise()
-			;
-
-		result.assertFile('package.json');
-		result.assertJsonFileContent('package.json', {
-			version: '0.0.0',
-			devDependencies: gitModules,
-		});
-		result.restore();
 	}, 300000);
 
-	it('should not install dependencies', async () => {
-		const result = await helpers
-			.run(generatorPath)
-			.withOptions({ skipInstall: false })
-			.withPrompts({ initGit: 'no', npmInstall: 'no' })
-			.toPromise()
-			;
+	describePrompts({ initGit: 'yes' }, (prompts) => {
+		it('should initialize .git', async () => {
+			const result = extendResult(
+				await helpers
+					.run(generatorPath)
+					.withOptions({ skipInstall: true })
+					.withPrompts(prompts)
+					.toPromise()
+			);
 
-		result.assertNoFile('package.json');
+			result.assertPathExists('.git');
+			result.restore();
+		}, 300000);
+	});
 
-		result.restore();
+
+	describePrompts({ initGit: 'no' }, (prompts) => {
+		it('should not initialize .git', async () => {
+			const result = extendResult(
+				await helpers
+					.run(generatorPath)
+					.withOptions({ skipInstall: true })
+					.withPrompts(prompts)
+					.toPromise()
+			);
+
+			result.assertPathDoesNotExists('.git');
+			result.restore();
+		}, 300000);
+	});
+
+	describePrompts({ initGit: 'yes', npmInstall: 'yes' }, (prompts) => {
+		it('should install dependencies', async () => {
+			const result = extendResult(
+				await helpers
+					.run(generatorPath)
+					.withOptions({ skipInstall: false })
+					.withPrompts(prompts)
+					.toPromise()
+			);
+
+			result.assertFile('package.json');
+			result.assertJsonFileContent('package.json', {
+				name: '',
+				version: '0.0.0',
+				keywords: [],
+				author: '',
+				license: 'ISC',
+				devDependencies: {
+					...gitModules,
+					...npmModules,
+				}
+			});
+			result.restore();
+		}, 300000);
+	});
+
+	describePrompts({ initGit: 'no', npmInstall: 'no' }, (prompts) => {
+		it('should not install dependencies', async () => {
+			const result = extendResult(
+				await helpers
+					.run(generatorPath)
+					.withOptions({ skipInstall: false })
+					.withPrompts(prompts)
+					.toPromise()
+			);
+
+			result.assertNoFile('package.json');
+
+			result.restore();
+		}, 300000);
 	});
 });

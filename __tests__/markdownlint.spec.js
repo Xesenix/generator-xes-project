@@ -1,11 +1,11 @@
 'use strict';
+import path from 'path';
 
-const path = require('path');
+import { resetPrompts, resetGeneratorComposition } from '../dist/lib/generator.js';
 
-const { resetPrompts, resetGeneratorComposition } = require('../lib/generator');
-const { testMarkdownLintConfig } = require('./utils/format');
+import { testMarkdownLintConfig } from './shared/markdown.js';
 
-const generatorPath = path.resolve('./generators/markdownlint');
+const generatorPath = path.resolve('./dist/generators/markdownlint');
 
 describe('yo xes-project:markdownlint', () => {
 	beforeEach(() => {

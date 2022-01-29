@@ -1,6 +1,7 @@
-const BaseGenerator = require('yeoman-generator');
-const fs = require('fs');
-const { progressColor } = require('./colors');
+import BaseGenerator from 'yeoman-generator';
+import fs from 'fs';
+
+import { progressColor } from './colors.js';
 
 /**
  * Global prompts response cache.
@@ -8,7 +9,14 @@ const { progressColor } = require('./colors');
 let asked = {};
 const composed = [];
 
-class Generator extends BaseGenerator {
+export const resetPrompts = () => asked = {};
+export const resetGeneratorComposition = () => composed.length = 0;
+
+/**
+ * Extended Base generator class with additional prompt answers memory
+ * and loging prefixes.
+ */
+export class Generator extends BaseGenerator {
 	namespace = 'GENERATOR';
 
 	constructor(args, opts) {
@@ -80,13 +88,3 @@ class Generator extends BaseGenerator {
 		this.fs.extendJSON(jsonFilePath, extend(data));
 	}
 }
-
-module.exports = {
-	/**
-	 * Extended Base generator class with additional prompt answers memory
-	 * and loging prefixes.
-	 */
-	Generator,
-	resetPrompts: () => asked = {},
-	resetGeneratorComposition: () => composed.length = 0,
-};

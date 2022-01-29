@@ -1,59 +1,55 @@
 {
-  "root": true,
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "plugins": [
-    "jest"
-  ],
-  "env": {
-    "es6": true,
-    "node": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:jest/recommended"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "__tests__/**/*.js"
-      ],
-      "env": {
-        "es6": true,
-        "node": true,
-        "jest": true
-      }
-    }
-  ],
-  "rules": {
-    "comma-dangle": [
-      "error",
-      "always-multiline"
-    ],
-    "template-curly-spacing": [
-      "error",
-      "always"
-    ],
-    "object-curly-spacing": [
-      "error",
-      "always"
-    ],
-    "jest/expect-expect": [
-      "error",
-      {
-        "assertFunctionNames": [
-          "expect",
-          "result.assertFile",
-          "result.assertIniFileContent",
-          "result.assertNoFile"
-        ]
-      }
-    ]
-  }
+	"root": true,
+	"parser": "@babel/eslint-parser",
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"requireConfigFile": false
+	},
+	"plugins": [
+		"jest"
+	],
+	"env": {
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:jest/recommended"
+	],
+	"rules": {
+		"quotes": [
+			"error",
+			"single"
+		],
+		"comma-dangle": [
+			"error",
+			"always-multiline"
+		],
+		"template-curly-spacing": [
+			"error",
+			"always"
+		],
+		"object-curly-spacing": [
+			"error",
+			"always"
+		],
+		"jest/expect-expect": [
+			"error",
+			{
+				"assertFunctionNames": [
+					"expect",
+					"result.assertFile",
+					"result.assertNoFile",
+					"result.assertIniFileContent",
+					"result.assertPathExists",
+					"result.assertPathDoesNotExists",
+					"result.assertJsonCFileContent"
+				]
+			}
+		]
+	}
 }

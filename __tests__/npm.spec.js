@@ -1,13 +1,14 @@
 'use strict';
 
-const path = require('path');
-const helpers = require('yeoman-test');
+import path from 'path';
+import helpers from 'yeoman-test';
 
-const { resetPrompts, resetGeneratorComposition } = require('../lib/generator');
+import { resetPrompts, resetGeneratorComposition } from '../dist/lib/generator.js';
 
-const { getModulesLatestVersions } = require('./utils/utils');
+import extendResult from './utils/extended-test-result';
+import { getModulesLatestVersions, describePrompts } from './utils/utils.js';
 
-const generatorPath = path.resolve('./generators/npm');
+const generatorPath = path.resolve('./dist/generators/npm');
 
 describe('yo xes-project:npm', () => {
 	let npmModules;
@@ -24,19 +25,26 @@ describe('yo xes-project:npm', () => {
 		resetGeneratorComposition();
 	});
 
-	it('should initialize package.json', async () => {
-		const result = await helpers
-			.run(generatorPath)
-			.withOptions({ skipInstall: false })
-			.withPrompts({ npmInstall: 'yes' })
-			.toPromise()
-			;
+	describePrompts({ npmInstall: 'yes' }, (prompts) => {
+		it('should initialize package.json', async () => {
+			const result = extendResult(
+				await helpers
+					.run(generatorPath)
+					.withOptions({ skipInstall: false })
+					.withPrompts(prompts)
+					.toPromise()
+			);
 
-		result.assertFile('package.json');
-		result.assertJsonFileContent('package.json', {
-			version: '0.0.0',
-			devDependencies: npmModules,
-		});
-		result.restore();
+			result.assertFile('package.json');
+			result.assertJsonFileContent('package.json', {
+				name: '',
+				version: '0.0.0',
+				keywords: [],
+				author: '',
+				license: 'ISC',
+				devDependencies: npmModules,
+			});
+			result.restore();
+		}, 300000);
 	});
 });

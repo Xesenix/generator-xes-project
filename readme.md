@@ -27,6 +27,7 @@
   - [3. How to contribute](#3-how-to-contribute)
   - [4. About generator development](#4-about-generator-development)
     - [4.1 Linting and formatting](#41-linting-and-formatting)
+    - [4.2 Configure babel](#42-configure-babel)
 
 ## 1. How to install generators
 
@@ -122,3 +123,7 @@ __Idea__: use [vscode language server](https://github.com/microsoft/vscode-langu
 [More info about Language Server](https://code.visualstudio.com/api/language-extensions/language-server-extension-guide)
 
 __Idea 2__: use eclint to fix indentation after running other fixers
+
+### 4.2 Configure babel
+
+[Setup Babel compiler assumptions](https://babeljs.io/docs/en/assumptions)

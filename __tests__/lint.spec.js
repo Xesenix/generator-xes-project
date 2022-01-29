@@ -3,30 +3,22 @@ import path from 'path';
 
 import { resetPrompts, resetGeneratorComposition } from '../dist/lib/generator.js';
 
-import { testGitIgnore } from './shared/git.js';
 import { testEditorConfig } from './shared/editorconfig.js';
+import { testTSLintConfig } from './shared/tslint.js';
 
-const generatorPath = path.resolve('./dist/generators/editorconfig');
+const generatorPath = path.resolve('./dist/generators/lint');
 
-describe('yo xes-project:editorconfig', () => {
+describe('yo xes-project:lint', () => {
 	beforeEach(() => {
 		resetPrompts();
 		resetGeneratorComposition();
 	});
 
-	testGitIgnore(generatorPath, {
-		prompts: {
-			initEditorConfig: 'yes',
-			gitIgnoreContext: ['Node'],
-		},
-	});
-
 	testEditorConfig(generatorPath, {
 		expect: {
 			editorConfigGenerated: true,
 		},
 		prompts: {
-			initEditorConfig: 'yes',
 			initLinting: 'yes',
 			lintingEngine: 'none',
 		},
@@ -37,8 +29,7 @@ describe('yo xes-project:editorconfig', () => {
 			editorConfigGenerated: false,
 		},
 		prompts: {
-			initEditorConfig: "no",
-			initLinting: 'yes',
+			initLinting: 'no',
 			lintingEngine: 'none',
 		},
 	});
@@ -48,9 +39,8 @@ describe('yo xes-project:editorconfig', () => {
 			editorConfigGenerated: true,
 		},
 		prompts: {
-			initEditorConfig: 'yes',
-			initLinting: 'no',
-			lintingEngine: 'none',
+			initLinting: 'yes',
+			lintingEngine: 'tslint',
 		},
 	});
 
@@ -59,9 +49,35 @@ describe('yo xes-project:editorconfig', () => {
 			editorConfigGenerated: false,
 		},
 		prompts: {
-			initEditorConfig: 'no',
 			initLinting: 'no',
-			lintingEngine: 'none',
+			lintingEngine: 'tslint',
+		},
+	});
+
+	testTSLintConfig(generatorPath, {
+		prompts: {
+			initLinting: 'yes',
+			lintingEngine: 'tslint',
+		},
+	});
+
+	testEditorConfig(generatorPath, {
+		expect: {
+			editorConfigGenerated: true,
+		},
+		prompts: {
+			initLinting: 'yes',
+			lintingEngine: 'eslint',
+		},
+	});
+
+	testEditorConfig(generatorPath, {
+		expect: {
+			editorConfigGenerated: false,
+		},
+		prompts: {
+			initLinting: 'no',
+			lintingEngine: 'eslint',
 		},
 	});
 });

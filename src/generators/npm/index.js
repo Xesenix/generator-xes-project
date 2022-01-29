@@ -1,16 +1,16 @@
 'use strict';
 
-const fs = require('fs');
+import fs from 'fs';
 
-const { Generator } = require('../../lib/generator');
-const { scriptColor } = require('../../lib/colors');
-const { promptNpmInstall } = require('../../lib/prompts');
+import { Generator } from '../../lib/generator.js';
+import { scriptColor } from '../../lib/colors.js';
+import { promptNpmInstall } from '../../lib/prompts.js';
 
-module.exports = class NPMGenerator extends Generator {
+export default class NPMGenerator extends Generator {
 	namespace = 'NPM';
 
 	async prompting() {
-		this.log(`General configuration:\n`);
+		this.log('General configuration:\n');
 
 		await promptNpmInstall(this);
 	}
@@ -20,7 +20,7 @@ module.exports = class NPMGenerator extends Generator {
 			return;
 		}
 
-		this.log(`Initializing npm...`);
+		this.log('Initializing npm...');
 
 		if (!fs.existsSync('package.json')) {
 			this.fs.extendJSON(this.destinationPath('package.json'), {
@@ -44,10 +44,8 @@ module.exports = class NPMGenerator extends Generator {
 				'cross-env',
 				'mkdirp',
 			]);
-
-			this.install({ npm: true });
 		} else {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
 		}
 	}
-};
+}

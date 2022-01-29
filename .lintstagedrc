@@ -1,5 +1,8 @@
 {
-	"!(**/templates/**/*)*.js": [
+	"src/**/!(**/templates/**/*)*.js": [
+		"eslint --*fix"
+	],
+	"__test__/**/!(**/templates/**/*)*.js": [
 		"eslint --fix"
 	],
 	"!(**/templates/**/*){*.json,.eslintrc,.prettierrc,.markdownlint,.lintstagedrc}": [

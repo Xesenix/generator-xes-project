@@ -1,9 +1,9 @@
-const { promptColor } = require('./colors');
-const { answerToBoolean } = require('./utils');
-const { validateNotEmpty } = require('./validators');
+import { promptColor } from './colors.js';
+import { answerToBoolean } from './utils.js';
+import { validateNotEmpty } from './validators.js';
 
-async function promptFormat(generator) {
-	generator.log(`Format configuration:\n`);
+export async function promptFormat(generator) {
+	generator.log('Format configuration:\n');
 
 	const format = await generator.prompt([
 		{
@@ -38,16 +38,17 @@ async function promptFormat(generator) {
 	generator.props = { ...generator.props, format };
 
 	Object.entries(generator.props).forEach(([key, value]) => generator.config.set(key, value));
+	generator.config.save();
 
 	return generator.props;
 }
 
-async function promptNpmInstall(generator) {
+export async function promptNpmInstall(generator) {
 	let { npmInstall } = await generator.prompt([
 		{
 			type: 'list',
 			name: 'npmInstall',
-			message: promptColor(`Install dependencies?`),
+			message: promptColor('Install dependencies?'),
 			default: 'yes',
 			choices: ['yes', 'no'],
 			store: false,
@@ -56,14 +57,10 @@ async function promptNpmInstall(generator) {
 
 	npmInstall = answerToBoolean(npmInstall);
 
-	generator.props = {
-		npmInstall,
-	};
+	generator.props = { ...generator.props, npmInstall };
+
 	Object.entries(generator.props).forEach(([key, value]) => generator.config.set(key, value));
 	generator.config.save();
-}
 
-module.exports = {
-	promptFormat,
-	promptNpmInstall,
-};
+	return generator.props;
+}

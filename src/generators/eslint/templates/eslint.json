@@ -1,0 +1,339 @@
+{
+	"root": true,
+	"ignorePatterns": [
+		"node_modules",
+		"coverage"
+	],
+	"parser": "@babel/eslint-parser",
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true,
+			"arrowFunctions": true,
+			"classes": true,
+			"defaultParams": true,
+			"destructuring": true,
+			"generators": true,
+			"modules": true,
+			"spread": true
+		},
+		"requireConfigFile": false
+	},
+	"env": {
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended"
+	],
+	"overrides": [
+		{
+			"files": [
+				"__tests__/**/*.js"
+			],
+			"env": {
+				"es6": true,
+				"node": true
+			}
+		}
+	],
+	"rules": {
+		"quotes": [
+			"error",
+			"single"
+		],
+		"comma-dangle": [
+			"error",
+			"always-multiline"
+		],
+		"template-curly-spacing": [
+			"error",
+			"always"
+		],
+		"object-curly-spacing": [
+			"error",
+			"always"
+		],
+		"curly": [
+			"warn"
+		],
+		"eqeqeq": [
+			"error"
+		],
+		"no-useless-rename": [
+			"error",
+			null
+		],
+		"no-useless-constructor": [
+			"error"
+		],
+		"no-useless-computed-key": [
+			"error",
+			{
+				"enforceForClassMembers": false
+			}
+		],
+		"no-var": [
+			"error"
+		],
+		"prefer-arrow-callback": [
+			"warn",
+			{
+				"allowNamedFunctions": true
+			}
+		],
+		"prefer-const": [
+			"error",
+			{
+				"destructuring": "any",
+				"ignoreReadBeforeAssign": false
+			}
+		],
+		"prefer-spread": [
+			"warn"
+		],
+		"rest-spread-spacing": [
+			"error",
+			"never"
+		],
+		"sort-imports": [
+			"error",
+			{
+				"ignoreCase": false,
+				"memberSyntaxSortOrder": [],
+				"ignoreDeclarationSort": false,
+				"ignoreMemberSort": false,
+				"allowSeparatedGroups": true
+			}
+		],
+		"no-console": [
+			"warn",
+			{
+				"allow": null
+			}
+		],
+		"no-useless-backreference": [
+			"warn"
+		],
+		"require-atomic-updates": [
+			"warn"
+		],
+		"valid-jsdoc": [
+			"off",
+			{
+				"prefer": null,
+				"preferType": null,
+				"requireReturn": true,
+				"requireParamDescription": true,
+				"requireReturnDescription": true,
+				"matchDescription": null,
+				"requireReturnType": true,
+				"requireParamType": true
+			}
+		],
+		"array-bracket-spacing": [
+			"warn",
+			"always",
+			{
+				"objectsInArrays": true,
+				"arraysInArrays": true
+			}
+		],
+		"block-spacing": [
+			"warn",
+			"always"
+		],
+		"camelcase": [
+			"error",
+			{
+				"ignoreDestructuring": true,
+				"ignoreImports": true,
+				"ignoreGlobals": true,
+				"properties": null,
+				"allow": null
+			}
+		],
+		"comma-spacing": [
+			"error",
+			{
+				"after": true
+			}
+		],
+		"comma-style": [
+			"off",
+			null,
+			{
+				"exceptions": null
+			}
+		],
+		"eol-last": [
+			"error",
+			"always"
+		],
+		"func-call-spacing": [
+			"off"
+		],
+		"func-name-matching": [
+			"warn"
+		],
+		"function-call-argument-newline": [
+			"error",
+			"consistent"
+		],
+		"indent": [
+			"error"
+		],
+		"jsx-quotes": [
+			"error",
+			"prefer-single"
+		],
+		"key-spacing": [
+			"error"
+		],
+		"linebreak-style": [
+			"error",
+			"unix"
+		],
+		"lines-around-comment": [
+			"warn",
+			{
+				"beforeBlockComment": true,
+				"afterBlockComment": false,
+				"beforeLineComment": false,
+				"afterLineComment": false,
+				"allowBlockStart": false,
+				"allowBlockEnd": false,
+				"allowClassStart": null,
+				"allowClassEnd": null,
+				"allowObjectStart": null,
+				"allowObjectEnd": null,
+				"allowArrayStart": null,
+				"allowArrayEnd": null,
+				"ignorePattern": null,
+				"applyDefaultIgnorePatterns": null
+			}
+		],
+		"lines-between-class-members": [
+			"error",
+			"always",
+			{
+				"exceptAfterSingleLine": false
+			}
+		],
+		"max-statements-per-line": [
+			"warn",
+			{
+				"max": 1
+			}
+		],
+		"multiline-comment-style": [
+			"warn",
+			"starred-block"
+		],
+		"multiline-ternary": [
+			"error",
+			"always-multiline"
+		],
+		"no-lonely-if": [
+			"warn"
+		],
+		"no-multiple-empty-lines": [
+			"error",
+			{
+				"max": 1,
+				"maxEOF": null,
+				"maxBOF": null
+			}
+		],
+		"no-trailing-spaces": [
+			"error",
+			{
+				"ignoreComments": true
+			}
+		],
+		"no-underscore-dangle": [
+			"error",
+			{
+				"allow": null,
+				"allowAfterThis": false,
+				"allowAfterSuper": false,
+				"allowAfterThisConstructor": false,
+				"enforceInMethodNames": false,
+				"allowFunctionParams": true
+			}
+		],
+		"no-whitespace-before-property": [
+			"error"
+		],
+		"object-property-newline": [
+			"error",
+			{
+				"allowAllPropertiesOnSameLine": true
+			}
+		],
+		"operator-linebreak": [
+			"error",
+			"before",
+			{
+				"overrides": null
+			}
+		],
+		"prefer-object-spread": [
+			"error"
+		],
+		"semi-spacing": [
+			"error",
+			{
+				"after": true
+			}
+		],
+		"sort-vars": [
+			"error",
+			{
+				"ignoreCase": false
+			}
+		],
+		"spaced-comment": [
+			"error",
+			"always",
+			{
+				"exceptions": null,
+				"markers": null,
+				"line": {
+					"exceptions": null,
+					"markers": null
+				},
+				"block": {
+					"exceptions": null,
+					"markers": null,
+					"balanced": false
+				}
+			}
+		],
+		"switch-colon-spacing": [
+			"error",
+			{
+				"after": true
+			}
+		],
+		"no-shadow": [
+			"warn",
+			{
+				"builtinGlobals": false,
+				"hoist": "functions",
+				"allow": null
+			}
+		],
+		"no-undef-init": [
+			"error"
+		],
+		"no-undefined": [
+			"error"
+		],
+		"no-use-before-define": [
+			"error"
+		]
+	},
+	"reportUnusedDisableDirectives": true
+}

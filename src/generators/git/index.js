@@ -1,10 +1,10 @@
 'use strict';
 
-const axios = require('axios');
+import axios from 'axios';
 
-const { Generator } = require('../../lib/generator');
-const { variableColor, scriptColor, promptColor, errortColor } = require('../../lib/colors');
-const { answerToBoolean } = require('../../lib/utils');
+import { variableColor, scriptColor, promptColor, errortColor } from '../../lib/colors.js';
+import { Generator } from '../../lib/generator.js';
+import { answerToBoolean } from '../../lib/utils.js';
 
 const getGitIgnore = async function (context) {
 	const gitIgnoreUrl = `https://raw.githubusercontent.com/github/gitignore/master/${ context }.gitignore`;
@@ -16,17 +16,17 @@ const getGitIgnore = async function (context) {
 	return `# ===== ${ context } =====\n# @see(${ gitIgnoreUrl })\n\n${ data }`;
 };
 
-module.exports = class GitGenerator extends Generator {
+export default class GitGenerator extends Generator {
 	namespace = 'GIT';
 
 	async prompting() {
-		this.log(`General configuration:\n`);
+		this.log('General configuration:\n');
 
 		let { initGit } = await this.prompt([
 			{
 				type: 'list',
 				name: 'initGit',
-				message: promptColor(`Initialize git: `),
+				message: promptColor('Initialize git: '),
 				default: 'yes',
 				choices: ['yes', 'no'],
 				store: true,
@@ -55,7 +55,7 @@ module.exports = class GitGenerator extends Generator {
 				{
 					type: 'checkbox',
 					name: 'gitIgnoreContext',
-					message: promptColor(`Select ignore context: `),
+					message: promptColor('Select ignore context: '),
 					default: ['Node'],
 					choices: ['Node', 'VisualStudio', 'UnrealEngine', 'Unity', 'Python', 'Android'],
 					store: true,
@@ -89,10 +89,10 @@ module.exports = class GitGenerator extends Generator {
 
 	async writing() {
 		if (this.props.initGit) {
-			this.log(`Initializing git...`);
+			this.log('Initializing git...');
 			this.spawnCommandSync('git', ['init']);
 		} else {
-			this.log(`Skiping initializing git...`);
+			this.log('Skiping initializing git...');
 		}
 
 		if (this.props.initGitIgnore) {
@@ -136,4 +136,4 @@ module.exports = class GitGenerator extends Generator {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
 		}
 	}
-};
+}

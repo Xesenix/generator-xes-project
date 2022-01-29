@@ -1,15 +1,15 @@
 'use strict';
 
-const { Generator } = require('../../lib/generator');
-const { scriptColor, promptColor } = require('../../lib/colors');
-const { answerToBoolean, unique } = require('../../lib/utils');
-const { promptFormat } = require('../../lib/prompts');
+import { Generator } from '../../lib/generator.js';
+import { scriptColor, promptColor } from '../../lib/colors.js';
+import { answerToBoolean, unique } from '../../lib/utils.js';
+import { promptFormat } from '../../lib/prompts.js';
 
-module.exports = class EditorConfigGenerator extends Generator {
+export default class EditorConfigGenerator extends Generator {
 	namespace = 'EDITOR';
 
 	async prompting() {
-		this.log(`General configuration:\n`);
+		this.log('General configuration:\n');
 
 		let { initEditorConfig } = await this.prompt([
 			{
@@ -122,4 +122,4 @@ module.exports = class EditorConfigGenerator extends Generator {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
 		}
 	}
-};
+}
