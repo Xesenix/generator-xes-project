@@ -51,19 +51,9 @@ export default class ESLintGenerator extends Generator {
 			this.composeWith(require.resolve('../npm'));
 		}
 
-		this.log(`Setting up ${ scriptColor('eslint.json') }...`);
-		this.fs.copyTpl(
-			this.templatePath('eslint.json'),
-			this.destinationPath('eslint.json'),
-			this.props,
-		);
-
-		this.log(`Add linting fixing hook on ${ scriptColor('pre-commit') }...`);
-		this.fs.extendJSON(this.destinationPath('package.json'), {
-			scripts: {
-				'pre-commit': 'lint:fix',
-			},
-		});
+		if (vsCodeSetup === null) {
+			this.composeWith(require.resolve('../vscode'));
+		}
 	}
 
 	/** modifies files that should already exists */
@@ -79,10 +69,10 @@ export default class ESLintGenerator extends Generator {
 			return;
 		}
 
-		this.log(`Setting up ${ scriptColor('eslint.json') }...`);
+		this.log(`Setting up ${ scriptColor('.eslintrc') }...`);
 		this.fs.copyTpl(
-			this.templatePath('eslint.json'),
-			this.destinationPath('eslint.json'),
+			this.templatePath('.eslintrc'),
+			this.destinationPath('.eslintrc'),
 			format,
 		);
 
@@ -99,6 +89,24 @@ export default class ESLintGenerator extends Generator {
 			this.extendJSON('.lintstagedrc', (lintStagedConfig) => ({
 				...lintStagedConfig,
 				'*.(j|t)s': ['eslint --fix'],
+			}));
+		}
+
+		if (vsCodeSetup) {
+			this.log(`Setting up recomendations in ${ scriptColor('.vscode/extensions.json') }...`);
+
+			this.extendJSON('.vscode/extensions.json', (extensions) => ({
+				recommendations: unique([
+					...(extensions.recommendations || []),
+					'dbaeumer.vscode-eslint',
+				]).sort(),
+			}));
+
+			this.log(`Enabling eslint in ${ scriptColor('.vscode/settings.json') }...`);
+
+			this.extendJSON('.vscode/settings.json', (settings) => ({
+				...settings,
+				'eslint.enable': true,
 			}));
 		}
 	}

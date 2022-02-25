@@ -24,8 +24,12 @@
 		"es6": true,
 		"node": true
 	},
+	"plugins": [
+		"editorconfig"
+	],
 	"extends": [
-		"eslint:recommended"
+		"eslint:recommended",
+		"plugin:editorconfig/noconflict"
 	],
 	"overrides": [
 		{
@@ -62,8 +66,7 @@
 			"error"
 		],
 		"no-useless-rename": [
-			"error",
-			null
+			"error"
 		],
 		"no-useless-constructor": [
 			"error"
@@ -101,16 +104,25 @@
 			"error",
 			{
 				"ignoreCase": false,
-				"memberSyntaxSortOrder": [],
 				"ignoreDeclarationSort": false,
 				"ignoreMemberSort": false,
+				"memberSyntaxSortOrder": [
+					"none",
+					"all",
+					"multiple",
+					"single"
+				],
 				"allowSeparatedGroups": true
 			}
 		],
 		"no-console": [
 			"warn",
 			{
-				"allow": null
+				"allow": [
+					"error",
+					"warn",
+					"info"
+				]
 			}
 		],
 		"no-useless-backreference": [
@@ -122,12 +134,9 @@
 		"valid-jsdoc": [
 			"off",
 			{
-				"prefer": null,
-				"preferType": null,
 				"requireReturn": true,
 				"requireParamDescription": true,
 				"requireReturnDescription": true,
-				"matchDescription": null,
 				"requireReturnType": true,
 				"requireParamType": true
 			}
@@ -147,11 +156,11 @@
 		"camelcase": [
 			"error",
 			{
-				"ignoreDestructuring": true,
+				"ignoreDestructuring": false,
 				"ignoreImports": true,
 				"ignoreGlobals": true,
-				"properties": null,
-				"allow": null
+				"properties": "always",
+				"allow": []
 			}
 		],
 		"comma-spacing": [
@@ -161,11 +170,8 @@
 			}
 		],
 		"comma-style": [
-			"off",
-			null,
-			{
-				"exceptions": null
-			}
+			"warn",
+			"last"
 		],
 		"eol-last": [
 			"error",
@@ -182,7 +188,11 @@
 			"consistent"
 		],
 		"indent": [
-			"error"
+			"error",
+			<%= indentStyle === 'space' ? indentSize : '"' + indentStyle + '"' %>,
+			{
+				"SwitchCase": 1
+			}
 		],
 		"jsx-quotes": [
 			"error",
@@ -204,14 +214,14 @@
 				"afterLineComment": false,
 				"allowBlockStart": false,
 				"allowBlockEnd": false,
-				"allowClassStart": null,
-				"allowClassEnd": null,
-				"allowObjectStart": null,
-				"allowObjectEnd": null,
-				"allowArrayStart": null,
-				"allowArrayEnd": null,
-				"ignorePattern": null,
-				"applyDefaultIgnorePatterns": null
+				"allowClassStart": true,
+				"allowClassEnd": false,
+				"allowObjectStart": true,
+				"allowObjectEnd": false,
+				"allowArrayStart": true,
+				"allowArrayEnd": false,
+				"ignorePattern": "TODO",
+				"applyDefaultIgnorePatterns": true
 			}
 		],
 		"lines-between-class-members": [
@@ -242,8 +252,8 @@
 			"error",
 			{
 				"max": 1,
-				"maxEOF": null,
-				"maxBOF": null
+				"maxEOF": 1,
+				"maxBOF": 1
 			}
 		],
 		"no-trailing-spaces": [
@@ -255,7 +265,7 @@
 		"no-underscore-dangle": [
 			"error",
 			{
-				"allow": null,
+				"allow": [],
 				"allowAfterThis": false,
 				"allowAfterSuper": false,
 				"allowAfterThisConstructor": false,
@@ -274,10 +284,7 @@
 		],
 		"operator-linebreak": [
 			"error",
-			"before",
-			{
-				"overrides": null
-			}
+			"before"
 		],
 		"prefer-object-spread": [
 			"error"
@@ -296,20 +303,7 @@
 		],
 		"spaced-comment": [
 			"error",
-			"always",
-			{
-				"exceptions": null,
-				"markers": null,
-				"line": {
-					"exceptions": null,
-					"markers": null
-				},
-				"block": {
-					"exceptions": null,
-					"markers": null,
-					"balanced": false
-				}
-			}
+			"always"
 		],
 		"switch-colon-spacing": [
 			"error",
@@ -322,7 +316,7 @@
 			{
 				"builtinGlobals": false,
 				"hoist": "functions",
-				"allow": null
+				"allow": []
 			}
 		],
 		"no-undef-init": [
