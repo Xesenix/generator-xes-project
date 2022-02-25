@@ -34,12 +34,14 @@ export default class TSLintGenerator extends Generator {
 		Object.entries(this.props).forEach(([key, value]) => this.config.set(key, value));
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
+			initTSLint = false,
 		} = this.config.getAll();
 
-		if (!this.props.initTSLint) {
+		if (!initTSLint) {
 			return;
 		}
 
@@ -48,10 +50,14 @@ export default class TSLintGenerator extends Generator {
 		}
 	}
 
-	async writing() {
-		const { format = null, initGit = false } = this.config.getAll();
+	/** generates files needed in other generators writing phase */
+	async default() {
+		const {
+			format = null,
+			initTSLint = false,
+		} = this.config.getAll();
 
-		if (!this.props.initTSLint) {
+		if (!initTSLint) {
 			return;
 		}
 
@@ -68,6 +74,18 @@ export default class TSLintGenerator extends Generator {
 				'tslint:fix': 'tslint --fix src/**/*.ts',
 			},
 		});
+	}
+
+	/** modifies files that should already exists */
+	async writing() {
+		const {
+			initGit = false,
+			initTSLint = false,
+		} = this.config.getAll();
+
+		if (!initTSLint) {
+			return;
+		}
 
 		if (initGit) {
 			this.log(`Setting up lint staged configuration in ${ scriptColor('.lintstagedrc') }...`);
@@ -82,13 +100,10 @@ export default class TSLintGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initTSLint = false,
 		} = this.config.getAll();
 
-		if (!this.props.initTSLint) {
-			return;
-		}
-
-		if (npmInstall) {
+		if (initTSLint && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				'tslint',

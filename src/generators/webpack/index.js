@@ -29,12 +29,14 @@ export default class WebpackGenerator extends Generator {
 		Object.entries(this.props).forEach(([key, value]) => this.config.set(key, value));
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
+			initWebpack = false,
 		} = this.config.getAll();
 
-		if (!this.props.initWebpack) {
+		if (!initWebpack) {
 			return;
 		}
 
@@ -43,8 +45,13 @@ export default class WebpackGenerator extends Generator {
 		}
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
-		if (!this.props.initWebpack) {
+		const {
+			initWebpack = false,
+		} = this.config.getAll();
+
+		if (!initWebpack) {
 			return;
 		}
 
@@ -67,13 +74,10 @@ export default class WebpackGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initWebpack = false,
 		} = this.config.getAll();
 
-		if (!this.props.initWebpack) {
-			return;
-		}
-
-		if (npmInstall) {
+		if (initWebpack && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				'webpack',

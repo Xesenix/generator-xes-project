@@ -35,12 +35,14 @@ module.exports = class VSCodeGenerator extends Generator {
 		}
 	}
 
-	async configure() {
+	/** setup dependencies between generators in response to user input */
+	async configuring() {
 		const {
 			initEditorConfig = null,
+			vsCodeSetup = false,
 		} = this.config.getAll();
 
-		if (!this.props.vsCodeSetup) {
+		if (!vsCodeSetup) {
 			return;
 		}
 
@@ -49,8 +51,13 @@ module.exports = class VSCodeGenerator extends Generator {
 		}
 	}
 
-	async writing() {
-		if (!this.props.vsCodeSetup) {
+	/** generates files needed in other generators writing phase */
+	async default() {
+		const {
+			vsCodeSetup = false,
+		} = this.config.getAll();
+
+		if (!vsCodeSetup) {
 			return;
 		}
 

@@ -35,13 +35,15 @@ export default class EditorConfigGenerator extends Generator {
 		this.config.save();
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			vsCodeSetup = null,
 			initGit = null,
+			initEditorConfig = false,
 		} = this.config.getAll();
 
-		if (!this.props.initEditorConfig) {
+		if (!initEditorConfig) {
 			return;
 		}
 
@@ -54,12 +56,14 @@ export default class EditorConfigGenerator extends Generator {
 		}
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
 		const {
 			vsCodeSetup = false,
+			initEditorConfig = false,
 		} = this.config.getAll();
 
-		if (!this.props.initEditorConfig) {
+		if (!initEditorConfig) {
 			return;
 		}
 
@@ -107,13 +111,10 @@ export default class EditorConfigGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initEditorConfig = false,
 		} = this.config.getAll();
 
-		if (!this.props.initEditorConfig) {
-			return;
-		}
-
-		if (npmInstall) {
+		if (initEditorConfig && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				'eclint',

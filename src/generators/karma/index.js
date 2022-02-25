@@ -30,12 +30,14 @@ export default class KarmaGenerator extends Generator {
 		this.config.save();
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
+			initKarma = false,
 		} = this.config.getAll();
 
-		if (!this.props.initKarma) {
+		if (!initKarma) {
 			return;
 		}
 
@@ -46,8 +48,13 @@ export default class KarmaGenerator extends Generator {
 		this.composeWith(require.resolve('../webpack'), {});
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
-		if (!this.props.initKarma) {
+		const {
+			initKarma = false,
+		} = this.config.getAll();
+
+		if (!initKarma) {
 			return;
 		}
 
@@ -70,9 +77,10 @@ export default class KarmaGenerator extends Generator {
 		const {
 			npmInstall = false,
 			initWebpack = false,
+			initKarma = false,
 		} = this.config.getAll();
 
-		if (npmInstall) {
+		if (initKarma && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				'karma',

@@ -35,13 +35,15 @@ export default class MDLintGenerator extends Generator {
 		this.config.save();
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
 			vsCodeSetup = null,
+			initMDLint = false,
 		} = this.config.getAll();
 
-		if (!this.props.initMDLint) {
+		if (!initMDLint) {
 			return;
 		}
 
@@ -54,10 +56,16 @@ export default class MDLintGenerator extends Generator {
 		}
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
-		const { format = null, vsCodeSetup = false, initGit = false } = this.config.getAll();
+		const {
+			format = null,
+			vsCodeSetup = false,
+			initGit = false,
+			initMDLint = false,
+		} = this.config.getAll();
 
-		if (!this.props.initMDLint) {
+		if (!initMDLint) {
 			return;
 		}
 
@@ -100,9 +108,10 @@ export default class MDLintGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initMDLint = false,
 		} = this.config.getAll();
 
-		if (npmInstall) {
+		if (initMDLint && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				// 'markdownlint',

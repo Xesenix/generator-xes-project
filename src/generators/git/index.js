@@ -73,12 +73,14 @@ export default class GitGenerator extends Generator {
 		this.config.save();
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
+			initGit = false,
 		} = this.config.getAll();
 
-		if (!this.props.initGit) {
+		if (!initGit) {
 			return;
 		}
 
@@ -87,19 +89,26 @@ export default class GitGenerator extends Generator {
 		}
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
-		if (this.props.initGit) {
+		const {
+			initGit = false,
+			initGitIgnore = false,
+			gitIgnoreContext = [],
+		} = this.config.getAll();
+
+		if (initGit) {
 			this.log('Initializing git...');
 			this.spawnCommandSync('git', ['init']);
 		} else {
 			this.log('Skiping initializing git...');
 		}
 
-		if (this.props.initGitIgnore) {
+		if (initGitIgnore) {
 			this.log(`Downloading ${ scriptColor('.gitignore') }...`);
 
 			try {
-				const ignoreContent = (await Promise.all(this.props.gitIgnoreContext.map((section) => getGitIgnore.call(this, section))))
+				const ignoreContent = (await Promise.all(gitIgnoreContext.map((section) => getGitIgnore.call(this, section))))
 					.join('\n');
 
 				this.log(`Initializing ${ scriptColor('.gitignore') }...`);
@@ -118,9 +127,10 @@ export default class GitGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initGit = false,
 		} = this.config.getAll();
 
-		if (npmInstall) {
+		if (initGit && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				'husky',

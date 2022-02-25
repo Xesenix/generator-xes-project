@@ -29,13 +29,15 @@ export default class DocsGenerator extends Generator {
 		Object.entries(this.props).forEach(([key, value]) => this.config.set(key, value));
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
 			vsCodeSetup = null,
+			initDocs = false,
 		} = this.config.getAll();
 
-		if (!this.props.initDocs) {
+		if (!initDocs) {
 			return;
 		}
 
@@ -48,12 +50,14 @@ export default class DocsGenerator extends Generator {
 		}
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
 		const {
 			vsCodeSetup = false,
+			initDocs = false,
 		} = this.config.getAll();
 
-		if (!this.props.initDocs) {
+		if (!initDocs) {
 			return;
 		}
 
@@ -72,14 +76,10 @@ export default class DocsGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initDocs = false,
 		} = this.config.getAll();
 
-
-		if (!this.props.initDocs) {
-			return;
-		}
-
-		if (npmInstall) {
+		if (initDocs && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 			]);

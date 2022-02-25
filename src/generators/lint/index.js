@@ -51,6 +51,7 @@ export default class EditorConfigGenerator extends Generator {
 		this.config.save();
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			initLinting,
@@ -76,6 +77,7 @@ export default class EditorConfigGenerator extends Generator {
 		await this.composeWith(require.resolve('../vscode'), {});
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
 		const { initGit = false } = this.config.getAll();
 

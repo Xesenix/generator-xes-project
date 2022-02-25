@@ -2,7 +2,7 @@
 
 import { Generator } from '../../lib/generator.js';
 import { scriptColor, promptColor } from '../../lib/colors.js';
-import { answerToBoolean } from '../../lib/utils.js';
+import { answerToBoolean, unique } from '../../lib/utils.js';
 import { promptFormat } from '../../lib/prompts.js';
 
 export default class ESLintGenerator extends Generator {
@@ -35,12 +35,15 @@ export default class ESLintGenerator extends Generator {
 		this.config.save();
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
+			vsCodeSetup = null,
+			initESLint = false,
 		} = this.config.getAll();
 
-		if (!this.props.initESLint) {
+		if (!initESLint) {
 			return;
 		}
 
@@ -63,13 +66,16 @@ export default class ESLintGenerator extends Generator {
 		});
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
 		const {
 			format = null,
 			initGit = false,
+			vsCodeSetup = false,
+			initESLint = false,
 		} = this.config.getAll();
 
-		if (!this.props.initESLint) {
+		if (!initESLint) {
 			return;
 		}
 
@@ -83,7 +89,7 @@ export default class ESLintGenerator extends Generator {
 		this.log(`Add lint fixing script to ${ scriptColor('package.json') }...`);
 		this.fs.extendJSON(this.destinationPath('package.json'), {
 			scripts: {
-				'eslint:fix': 'eslint --report-unused-disable-directives --fix src/**/*.(j|t)s',
+				'eslint:fix': 'eslint --report-unused-disable-directives --fix ./**/*.(j|t)s',
 			},
 		});
 
@@ -100,16 +106,15 @@ export default class ESLintGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initESLint = false,
 		} = this.config.getAll();
 
-		if (!this.props.initESLint) {
-			return;
-		}
-
-		if (npmInstall) {
+		if (initESLint && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				'eslint',
+				'@babel/eslint-parser',
+				'eslint-plugin-editorconfig',
 			]);
 		} else {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);

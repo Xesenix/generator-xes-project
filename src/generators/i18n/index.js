@@ -30,12 +30,14 @@ export default class I18nGenerator extends Generator {
 		this.config.save();
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
+			initI18n = false,
 		} = this.config.getAll();
 
-		if (!this.props.initI18n) {
+		if (!initI18n) {
 			return;
 		}
 
@@ -44,8 +46,13 @@ export default class I18nGenerator extends Generator {
 		}
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
-		if (!this.props.initI18n) {
+		const {
+			initI18n = false,
+		} = this.config.getAll();
+
+		if (!initI18n) {
 			return;
 		}
 
@@ -54,9 +61,10 @@ export default class I18nGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initI18n = false,
 		} = this.config.getAll();
 
-		if (npmInstall) {
+		if (initI18n && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				'gettext-extractor',

@@ -15,8 +15,13 @@ export default class NPMGenerator extends Generator {
 		await promptNpmInstall(this);
 	}
 
-	async configure() {
-		if (!this.props.npmInstall) {
+	/** generates files needed in other generators writing phase */
+	async default() {
+		const {
+			npmInstall = false,
+		} = this.config.getAll();
+
+		if (!npmInstall) {
 			return;
 		}
 

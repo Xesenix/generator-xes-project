@@ -2,7 +2,7 @@
 import { Generator } from '../../lib/generator.js';
 
 export default class AppGenerator extends Generator {
-	async configuring() {
+	async initializing() {
 		this.log('App configure');
 
 		this.composeWith(require.resolve('../npm'), {});

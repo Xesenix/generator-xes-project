@@ -29,12 +29,14 @@ export default class TSGenerator extends Generator {
 		Object.entries(this.props).forEach(([key, value]) => this.config.set(key, value));
 	}
 
+	/** setup dependencies between generators in response to user input */
 	async configuring() {
 		const {
 			npmInstall = null,
+			initTS = false,
 		} = this.config.getAll();
 
-		if (!this.props.initTS) {
+		if (!initTS) {
 			return;
 		}
 
@@ -43,8 +45,13 @@ export default class TSGenerator extends Generator {
 		}
 	}
 
+	/** modifies files that should already exists */
 	async writing() {
-		if (!this.props.initTS) {
+		const {
+			initTS = false,
+		} = this.config.getAll();
+
+		if (!initTS) {
 			return;
 		}
 
@@ -59,13 +66,10 @@ export default class TSGenerator extends Generator {
 	async install() {
 		const {
 			npmInstall = false,
+			initTS = false,
 		} = this.config.getAll();
 
-		if (!this.props.initTS) {
-			return;
-		}
-
-		if (npmInstall) {
+		if (initTS && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
 				'@babel/core',
