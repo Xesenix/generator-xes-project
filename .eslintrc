@@ -1,5 +1,10 @@
 {
 	"root": true,
+	"ignorePatterns": [
+		"node_modules",
+		"coverage",
+		"dist"
+	],
 	"parser": "@babel/eslint-parser",
 	"parserOptions": {
 		"ecmaVersion": 2018,
@@ -9,16 +14,18 @@
 		},
 		"requireConfigFile": false
 	},
-	"plugins": [
-		"jest"
-	],
 	"env": {
 		"es6": true,
 		"node": true
 	},
+	"plugins": [
+		"jest",
+		"editorconfig"
+	],
 	"extends": [
 		"eslint:recommended",
-		"plugin:jest/recommended"
+		"plugin:jest/recommended",
+		"plugin:editorconfig/noconflict"
 	],
 	"rules": {
 		"quotes": [
@@ -37,6 +44,14 @@
 			"error",
 			"always"
 		],
+		"indent": [
+			"error",
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"jest/no-export": "off",
 		"jest/expect-expect": [
 			"error",
 			{

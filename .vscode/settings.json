@@ -2,9 +2,9 @@
 	"css.validate": false,
 	"less.validate": false,
 	"scss.validate": false,
-	"editor.wrappingIndent": "indent",
 	"html.format.wrapAttributes": "force-expand-multiline",
 	"editor.formatOnSave": true,
+	"editor.wrappingIndent": "indent",
 	"editor.codeActionsOnSave": {
 		"source.fixAll": true
 	},
@@ -20,7 +20,10 @@
 	"[scss]": {
 		"editor.defaultFormatter": "mrmlnc.vscode-scss"
 	},
-	"[ts]": {
+	"[javascript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[typescript]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
 	"[markdown]": {
@@ -28,5 +31,7 @@
 	},
 	"javascript.format.semicolons": "insert",
 	"javascript.preferences.quoteStyle": "single",
-	"typescript.format.semicolons": "insert"
+	"typescript.format.semicolons": "insert",
+	"typescript.preferences.quoteStyle": "single",
+	"eslint.enable": true
 }

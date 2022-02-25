@@ -16,6 +16,14 @@
 		"cypress",
 		"docker"
 	],
+	"watch": {
+		"build": {
+			"patterns": [
+				"src/**/*.*"
+			],
+			"extensions": "cjs,mjs,ts,tsx,js,jsx,json,jsonc,eslintrc,editorconfig"
+		}
+	},
 	"scripts": {
 		"pretest": "npm run lint:fix && npm run build",
 		"lint:fix": "eslint --report-unused-disable-directives --fix ./src",
@@ -24,6 +32,7 @@
 		"clean:dist": "rimraf ./dist",
 		"publish:templates": "copyfiles -aV -u 1 ./src/**/templates/* ./dist",
 		"build": "npm run clean:dist && npm run publish:templates && babel -d dist src",
+		"watch": "npm-watch",
 		"test": "jest --detectOpenHandles"
 	},
 	"jest": {
@@ -72,6 +81,7 @@
 		"eslint": "^7.30.0",
 		"eslint-config-standard": "^16.0.3",
 		"eslint-config-xo": "^0.37.0",
+		"eslint-plugin-editorconfig": "^3.2.0",
 		"eslint-plugin-import": "^2.23.4",
 		"eslint-plugin-jest": "^24.3.6",
 		"eslint-plugin-node": "^11.1.0",
@@ -84,6 +94,7 @@
 		"log-to-file": "^3.0.0",
 		"markdownlint-cli": "^0.26.0",
 		"node-notifier": "^10.0.0",
+		"npm-watch": "^0.11.0",
 		"package-json": "^7.0.0",
 		"prettier": "^2.4.1",
 		"regenerator-runtime": "^0.13.9",
