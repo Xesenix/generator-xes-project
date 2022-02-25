@@ -37,7 +37,7 @@ describe('yo xes-project:editorconfig', () => {
 			editorConfigGenerated: false,
 		},
 		prompts: {
-			initEditorConfig: "no",
+			initEditorConfig: 'no',
 			initLinting: 'yes',
 			lintingEngine: 'none',
 		},

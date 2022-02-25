@@ -32,7 +32,7 @@ describe('yo xes-project:npm', () => {
 					.run(generatorPath)
 					.withOptions({ skipInstall: false })
 					.withPrompts(prompts)
-					.toPromise()
+					.toPromise(),
 			);
 
 			result.assertFile('package.json');

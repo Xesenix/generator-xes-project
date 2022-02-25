@@ -49,7 +49,7 @@ export const testEditorConfig = (generatorPath, { expect: { editorConfigGenerate
 						.withPrompts({
 							...prompts,
 						})
-						.toPromise()
+						.toPromise(),
 				);
 
 				result.assertNoFile('.editorconfig');
