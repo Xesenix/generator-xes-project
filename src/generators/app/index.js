@@ -8,6 +8,7 @@ export default class AppGenerator extends Generator {
 		this.composeWith(require.resolve('../npm'), {});
 		this.composeWith(require.resolve('../git'), {});
 		this.composeWith(require.resolve('../lint'), {});
+		this.composeWith(require.resolve('../babel'), {});
 		this.composeWith(require.resolve('../webpack'), {});
 		this.composeWith(require.resolve('../karma'), {});
 		this.composeWith(require.resolve('../i18n'), {});
