@@ -76,12 +76,12 @@ export default class EditorConfigGenerator extends Generator {
 			format,
 		);
 
-		this.log(`Add lint fixing script to ${ scriptColor('package.json') }...`);
-		this.fs.extendJSON(this.destinationPath('package.json'), {
-			scripts: {
-				'eclint:fix': 'eclint fix',
-			},
-		});
+		// this.log(`Add lint fixing script to ${ scriptColor('package.json') }...`);
+		// this.fs.extendJSON(this.destinationPath('package.json'), {
+		// 	scripts: {
+		// 		'eclint:fix': 'eclint fix',
+		// 	},
+		// });
 
 		if (vsCodeSetup) {
 			this.log(`Setting up recomendations in ${ scriptColor('.vscode/extensions.json') }...`);
@@ -102,7 +102,7 @@ export default class EditorConfigGenerator extends Generator {
 				(lintStagedConfig) => ({
 					...lintStagedConfig,
 					// editor config should be last
-					'*': 'eclint fix',
+					// '*': 'eclint fix', // breaks comments formatting
 				}),
 			);
 		}
@@ -116,9 +116,9 @@ export default class EditorConfigGenerator extends Generator {
 
 		if (initEditorConfig && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
-			await this.addDevDependencies([
-				'eclint',
-			]);
+			// await this.addDevDependencies([
+			// 	'eclint',
+			// ]);
 		} else {
 			this.log(`Skiping adding dependencies ${ scriptColor('package.json') }...`);
 		}

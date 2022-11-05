@@ -135,7 +135,6 @@ export default class GitGenerator extends Generator {
 			await this.addDevDependencies([
 				'husky',
 				'lint-staged',
-				'validate-commit-msg',
 				'commitizen',
 				'cz-conventional-changelog',
 				'semantic-release',
