@@ -33,6 +33,8 @@ export class Generator extends BaseGenerator {
 			description: 'Parent generator name.',
 			default: '',
 		});
+
+		// this.queueTransformStream(stream)
 	}
 
 	/**

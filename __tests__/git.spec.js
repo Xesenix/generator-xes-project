@@ -17,9 +17,8 @@ describe('yo xes-project:git', () => {
 
 	beforeAll(async () => {
 		gitModules = await getModulesLatestVersions([
-			'husky',
+			// 'husky',
 			'lint-staged',
-			'validate-commit-msg',
 			'commitizen',
 			'cz-conventional-changelog',
 			'semantic-release',
@@ -46,7 +45,7 @@ describe('yo xes-project:git', () => {
 				.run(generatorPath)
 				.withOptions({ skipInstall: true })
 				.withPrompts({ initGit: 'no', initGitIgnore: 'no' })
-				.toPromise()
+				.toPromise(),
 		);
 
 		result.assertNoFile('.gitignore');
@@ -60,7 +59,7 @@ describe('yo xes-project:git', () => {
 					.run(generatorPath)
 					.withOptions({ skipInstall: true })
 					.withPrompts(prompts)
-					.toPromise()
+					.toPromise(),
 			);
 
 			result.assertPathExists('.git');
@@ -76,7 +75,7 @@ describe('yo xes-project:git', () => {
 					.run(generatorPath)
 					.withOptions({ skipInstall: true })
 					.withPrompts(prompts)
-					.toPromise()
+					.toPromise(),
 			);
 
 			result.assertPathDoesNotExists('.git');
@@ -91,7 +90,7 @@ describe('yo xes-project:git', () => {
 					.run(generatorPath)
 					.withOptions({ skipInstall: false })
 					.withPrompts(prompts)
-					.toPromise()
+					.toPromise(),
 			);
 
 			result.assertFile('package.json');
@@ -104,7 +103,7 @@ describe('yo xes-project:git', () => {
 				devDependencies: {
 					...gitModules,
 					...npmModules,
-				}
+				},
 			});
 			result.restore();
 		}, 300000);
@@ -117,7 +116,7 @@ describe('yo xes-project:git', () => {
 					.run(generatorPath)
 					.withOptions({ skipInstall: false })
 					.withPrompts(prompts)
-					.toPromise()
+					.toPromise(),
 			);
 
 			result.assertNoFile('package.json');

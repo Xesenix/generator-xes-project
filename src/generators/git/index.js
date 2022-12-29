@@ -133,7 +133,7 @@ export default class GitGenerator extends Generator {
 		if (initGit && npmInstall) {
 			this.log(`Adding dependencies to ${ scriptColor('package.json') }...`);
 			await this.addDevDependencies([
-				'husky',
+				// 'husky',
 				'lint-staged',
 				'commitizen',
 				'cz-conventional-changelog',

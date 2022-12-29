@@ -13,8 +13,5 @@
 	],
 	"*.md": [
 		"markdownlint --fix -c .markdownlint.jsonc"
-	],
-	"*": [
-		"eclint fix"
 	]
 }
